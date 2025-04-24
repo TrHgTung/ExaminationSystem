@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class IsStudent
@@ -16,7 +17,7 @@ class IsStudent
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user() && $request->user()->role === 'student') {
+        if (Auth::guard('student')->check()) {
             return $next($request);
         }
         return response()->json([

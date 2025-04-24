@@ -10,7 +10,7 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum');
-        $this->middleware('idAdmin')->only(['createStudent', 'createLecturer']);
+        $this->middleware('idAdmin')->only(['createStudent', 'createLecturer']); // chi cho phep admin thuc hien nhung ham nay
     }
 
     public function createStudent(Request $request) {
