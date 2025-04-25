@@ -46,7 +46,7 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(Request $req){
+    public function logout(Request $request){
         // auth()->user()->tokens()->delete();
         $getStudent = auth()->user();
 
@@ -63,7 +63,7 @@ class AuthController extends Controller
         ], 401);
     }
 
-    public function profile(Request $req) {
+    public function profile(Request $request) {
         $getStudent = auth()->user();
         // $getStudentEmail = auth()->user()->Email;
 
