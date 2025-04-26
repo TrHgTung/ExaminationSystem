@@ -12,7 +12,7 @@ class QuestionExam extends Model
     protected $table = 'question_exams';
     protected $fillable = [
         'QuestionExamID',
-        'QuesionID', // foreign key
+        'QuestionID', // foreign key
         'ExamID', // foreign key
     ];
 }

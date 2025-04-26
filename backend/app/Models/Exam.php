@@ -13,6 +13,7 @@ class Exam extends Model
     protected $fillable = [
         'ExamID', // primary key
         'ExamName',
-        'Status'
+        'Status',
+        'Author', // get AdminID
     ];
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('QuestionContent');
             $table->string('QuestionImage');
             $table->string('QuestionType'); // physic, chemistry, biology,...
+            $table->string('Author'); // get lectureID
             // $table->foreignId('ExamID')->constrained('exams')->onDelete('cascade'); // Foreign key to exams table
             // $table->string('ExamID'); // Foreign key to questions table
         });
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->string('ExamID')->unique(); 
             $table->string('ExamName');
             $table->boolean('Status')->default(1); // 0: done, 1: available
+            $table->string('Author'); // get AdminID
         });
     }
 

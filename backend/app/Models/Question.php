@@ -15,6 +15,7 @@ class Question extends Model
         'QuestionContent',
         'QuestionImage',
         'QuestionType', // physic, chemistry, biology,. ....
+        'Author', // get lectureID
         // 'ExamID', // foreign key
     ];
 }
