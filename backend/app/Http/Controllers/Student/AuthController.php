@@ -11,9 +11,10 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum');
-        $this->middleware('isLecturer')->only(['profile', 'logout', 'updateProfile']); // chi cho phep student thuc hien nhung ham nay
+        $this->middleware('isStudent')->only(['logout', 'profile', 'updateProfile']); // chi cho phep student thuc hien nhung ham nay
     }
 
+    // post
     public function login(Request $request) {
         // $getStudent = Student::where('Email', $request->input('Email'))->first();
 
@@ -46,6 +47,7 @@ class AuthController extends Controller
         }
     }
 
+    // post
     public function logout(Request $request){
         // auth()->user()->tokens()->delete();
         $getStudent = auth()->user();
@@ -63,6 +65,7 @@ class AuthController extends Controller
         ], 401);
     }
 
+    // get
     public function profile(Request $request) {
         $getStudent = auth()->user();
         // $getStudentEmail = auth()->user()->Email;
@@ -78,6 +81,7 @@ class AuthController extends Controller
         ], 401);
     }
 
+    // patch
     public function updateProfile(Request $request) {
         $getStudent = auth()->user();
         $validateStudentInfo = $request->validate([

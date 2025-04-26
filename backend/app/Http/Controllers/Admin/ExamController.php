@@ -11,9 +11,10 @@ class ExamController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum');
-        $this->middleware('isLecturer')->only(['createExam']); // chi cho phep admin thuc hien nhung ham nay
+        $this->middleware('idAdmin')->only(['createExam', 'updateExam']); // chi cho phep admin thuc hien nhung ham nay
     }
 
+    // post
     public function createExam(Request $request) { // tu dong tao de thi
         // Tu dong tao ExamID
         $lastExam = Exam::orderBy('ExamID', 'desc')->first();
@@ -47,6 +48,30 @@ class ExamController extends Controller
     
         return response()->json([
             'message' => 'Da hoan tat tao de thi',
+        ], 200);
+    }
+
+    // patch
+    public function updateExam(Request $request, $examID) { // cap nhat de thi
+        $getExam = Exam::where('ExamID', $examID)->first();
+        if (!$getExam) {
+            return response()->json([
+                'message' => 'Loi ket noi du lieu hoac chua co de thi nao (Lien he Admin)',
+            ], 404);
+        }
+
+        $validateExam = $request->validate([
+            'ExamName' => 'required',
+        ]);
+
+        $getExam->update(
+            [
+                'ExamName' => $validateExam['ExamName'],
+            ]
+        );
+
+        return response()->json([
+            'message' => 'Da hoan tat cap nhat de thi',
         ], 200);
     }
 }

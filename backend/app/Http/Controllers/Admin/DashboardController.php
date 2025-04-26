@@ -10,9 +10,10 @@ class DashboardController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum');
-        $this->middleware('isLecturer')->only(['getQuestion', 'getAnswer', 'getExamList']); // chi cho phep admin thuc hien nhung ham nay
+        $this->middleware('idAdmin')->only(['getQuestion', 'getAnswer', 'getExamList', 'getStudentList', 'getLecturerList', 'removeExam', 'removeLecturer', 'removeStudent']); // chi cho phep admin thuc hien nhung ham nay
     }
 
+    // get
     public function getExamList() { // lay danh sach de thi
         $getAuthor = auth()->user()->Email;
         $getAllExams = Exam::where('Author', $getAuthor)->get();
@@ -27,6 +28,7 @@ class DashboardController extends Controller
         ], 200);
     }
 
+    // get
     public function getQuestion() { // lay danh sach cau hoi
         // $getAuthor = auth()->user()->Email;
         $getAllQuestions = Question::all();
@@ -41,6 +43,7 @@ class DashboardController extends Controller
         ], 200);
     }
 
+    // get
     public function getAnswer() { // lay danh sach dap an
         // $getAuthor = auth()->user()->Email;
         $getAllAnswers = Answer::all();
@@ -55,6 +58,7 @@ class DashboardController extends Controller
         ], 200);
     }
 
+    // get
     public function getStudentList() { // lay danh sach sinh vien
         $getAllStudents = Student::all();
         if (!$getAllStudents) {
@@ -68,6 +72,7 @@ class DashboardController extends Controller
         ], 200);
     }
 
+    // get
     public function getLecturerList() { // lay danh sach giang vien
         $getAllLecturers = Lecturer::all();
         if (!$getAllLecturers) {
@@ -81,6 +86,7 @@ class DashboardController extends Controller
         ], 200);
     }
 
+    // delete
     public function removeExam($examID) { // xoa de thi -> xoa luon cac cau hoi lien quan -> xoa luon cac dap an lien quan
         $getExam = Exam::where('ExamID', $examID)->first();
         $relatedQuestions = QuestionExam::where('ExamID', $examID)->get();
@@ -100,6 +106,7 @@ class DashboardController extends Controller
         ], 200);
     }
 
+    // delete
     public function removeLecturer($lecturerID) { // xoa giang vien
         $getLecturer = Lecturer::where('LecturerID', $lecturerID)->first();
         if (!$getLecturer) {
@@ -114,6 +121,7 @@ class DashboardController extends Controller
         ], 200);
     }
 
+    // delete
     public function removeStudent($studentID) { // xoa sinh vien
         $getStudent = Student::where('StudentID', $studentID)->first();
         if (!$getStudent) {

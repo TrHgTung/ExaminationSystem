@@ -15,6 +15,7 @@ class AccountController extends Controller
         $this->middleware('idAdmin')->only(['createStudent', 'createLecturer']); // chi cho phep admin thuc hien nhung ham nay
     }
 
+    // post
     public function createStudent(Request $request) {
         $thisYear = date('Y');
         $validateStudentInfo = $request->validate([
@@ -27,10 +28,10 @@ class AccountController extends Controller
             'Status' => 'in:0,1', // 0 là bị ban, 1 là tài khoản oke
         ]);
 
-    // Tu dong tao StudentID
-    $lastStudent = Student::orderBy('StudentID', 'desc')->first();
-    // $studentCount1 = Student::count();
-    $studentCount = 0;
+        // Tu dong tao StudentID
+        $lastStudent = Student::orderBy('StudentID', 'desc')->first();
+        // $studentCount1 = Student::count();
+        $studentCount = 0;
     
         if ($lastStudent) {
             $lastStudentID = $lastStudent->StudentID;
@@ -77,6 +78,7 @@ class AccountController extends Controller
         ], 201);
     }
 
+    // post
     public function createLecturer(Request $request) {
         $thisYear = date('Y');
         $validateLecturerInfo = $request->validate([
@@ -88,10 +90,10 @@ class AccountController extends Controller
             'Status' => 'in:0,1', // 0 là bị ban, 1 là tài khoản oke
         ]);
 
-    // Tu dong tao LecturerID
-    $lastLecturer = Lecturer::orderBy('LecturerID', 'desc')->first();
-    // $lecturerCount1 = Lecturer::count();
-    $lecturerCount = 0;
+        // Tu dong tao LecturerID
+        $lastLecturer = Lecturer::orderBy('LecturerID', 'desc')->first();
+        // $lecturerCount1 = Lecturer::count();
+        $lecturerCount = 0;
     
         if ($lastLecturer) {
             $lastLecturerID = $lastLecturer->LecturerID;

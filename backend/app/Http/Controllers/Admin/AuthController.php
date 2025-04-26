@@ -16,6 +16,7 @@ class AuthController extends Controller
         $this->middleware('idAdmin')->only(['logout', 'viewProfile', 'changePassword']); // chi cho phep admin thuc hien nhung ham nay
     }
 
+    // post
     public function login(Request $request) {
         $validateAdmin = $request->validate([
             'Email' => 'required|email',
@@ -44,6 +45,7 @@ class AuthController extends Controller
         }
     }
 
+    // post
     public function logout(Request $request){
         $getAdmin = auth()->user();
 
@@ -63,6 +65,7 @@ class AuthController extends Controller
         }
     }
 
+    // get
     public function viewProfile(Request $request) {
         $getAdmin = auth()->user();
 
@@ -79,6 +82,7 @@ class AuthController extends Controller
         }
     }
 
+    // patch
     public function changePassword(Request $request) {
         $getAdmin = auth()->user();
 

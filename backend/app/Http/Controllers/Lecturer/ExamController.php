@@ -15,22 +15,12 @@ class ExamController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum');
-        $this->middleware('isLecturer')->only(['createQuestion', 'createAnswer', 'getExamList']); // chi cho phep admin thuc hien nhung ham nay
+        $this->middleware('isLecturer')->only([
+            'createQuestion', 'createAnswer', 'updateQuestion', 'updateAnswer'
+        ]); // chi cho phep admin thuc hien nhung ham nay
     }
 
-    public function getExamList() { // lay danh sach de thi
-        $getAllExams = Exam::all();
-        if (!$getAllExams) {
-            return response()->json([
-                'message' => 'Loi ket noi du lieu hoac chua co de thi nao (Lien he Admin)',
-            ], 404);
-        }
-
-        return response()->json([
-            'examList' => $getAllExams,
-        ], 200);
-    }
-
+    // post
     public function createQuestion($examID, Request $request) { // tao cac cau hoi
         // $getChosenExam = Exam::where('ExamID', $examID)->first();
         // if (!$getChosenExam) {
@@ -103,12 +93,18 @@ class ExamController extends Controller
         ], 200);
     }
     
-    public function createAnswer(Request $request) { // tao dap an cho cau hoi
+    // post
+    public function createAnswer($questionID, Request $request) { // tao dap an cho cau hoi
+        if(!$questionID) {
+            return response()->json([
+                'message' => 'Loi may chu',
+            ], 500);
+        }
+        
         $validateInfo = $request->validate([
             'AnswerContent' => 'required',
             'AmswerImage' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'IsCorrect' => 'required|boolean',
-            'QuestionID' => 'required',
         ]);
 
         // Tu dong tao AnswerID
@@ -126,12 +122,12 @@ class ExamController extends Controller
             $newAnsID = 'AN_000001'; // dap an dau tien
         }
     
-        $createAns = Question::create([
+        $createAns = Answer::create([
             'AnswerID' => $newAnsID,
             'AnswerContent' => $validateInfo['QuestionContent'],
             'AnswerImage' => $validateInfo['QuestionImage'],
             'IsCorrect' => $validateInfo['IsCorrect'],
-            'QuestionID' => $validateInfo['QuestionID'],
+            'QuestionID' => $questionID,
         ]);
 
         if (!$createAns) {
@@ -143,6 +139,59 @@ class ExamController extends Controller
         
         return response()->json([
             'message' => 'Da tao dap an',
+        ], 200);
+    }
+
+    // patch: update cau hoi
+    public function updateQuestion(Request $request, $questionID) {
+        $getQuestion = Question::where('QuestionID', $questionID)->first();
+        if (!$getQuestion) {
+            return response()->json([
+                'message' => 'Loi ket noi du lieu hoac ban chua tao dap an nao',
+            ], 404);
+        }
+
+        $validateQuestion = $request->validate([
+            'QuestionContent' => 'required',
+        ]);
+
+        $getQuestion->update(
+            [
+                'QuestionContent' => $validateQuestion['QuestionContent'],
+                'QuestionImage' => $request->input('QuestionImage'),
+                'QuestionType' => $request->input('QuestionType')
+            ]
+        );
+
+        return response()->json([
+            'message' => 'Da hoan tat cap nhat cau hoi',
+        ], 200);
+    }
+
+    // patch: update dap an
+    public function updateAnswer(Request $request, $answerID) {
+        $getAnswer = Answer::where('AnswerID', $answerID)->first();
+        if (!$getAnswer) {
+            return response()->json([
+                'message' => 'Loi ket noi du lieu hoac ban chua tao dap an nao',
+            ], 404);
+        }
+
+        $validate = $request->validate([
+            'QuestionContent' => 'required',
+            'IsCorrect' => 'required|boolean',
+        ]);
+
+        $getAnswer->update(
+            [
+                'AnswerContent' => $validate['AnswerContent'],
+                'AnswerImage' => $request->input('AnswerImage'),
+                'IsCorrect' => $validate['IsCorrect'],
+            ]
+        );
+
+        return response()->json([
+            'message' => 'Da hoan tat cap nhat dap an',
         ], 200);
     }
 }

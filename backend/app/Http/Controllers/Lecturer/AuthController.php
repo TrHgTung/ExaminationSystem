@@ -15,6 +15,7 @@ class AuthController extends Controller // LECTURER
         $this->middleware('isLecturer')->only(['logout', 'viewProfile']); // chi cho phep admin thuc hien nhung ham nay
     }
 
+    // post
     public function login(Request $request) {
         $validateLecturer = $request->validate([
             'Email' => 'required|email',
@@ -45,6 +46,7 @@ class AuthController extends Controller // LECTURER
         }
     }
 
+    // post
     public function logout(Request $request){
         // auth()->user()->tokens()->delete();
         $getLecturer = auth()->user();
@@ -64,6 +66,7 @@ class AuthController extends Controller // LECTURER
         }
     }
    
+    // get
     public function viewProfile(Request $request) {
         $getLecturer = auth()->user();
 
